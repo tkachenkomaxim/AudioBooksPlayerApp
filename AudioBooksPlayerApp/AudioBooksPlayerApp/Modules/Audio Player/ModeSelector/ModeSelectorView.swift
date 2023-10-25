@@ -11,7 +11,9 @@ import SwiftUI
 // MARK: - Constants
 
 private enum Const {
+    
     enum Sizes {
+        
         static let padding: CGFloat = 15.0
         static let spacing: CGFloat = 35.0
         static let width: CGFloat = 45.0
@@ -19,6 +21,7 @@ private enum Const {
         static let lineWidth: CGFloat = 1
     }
     enum Icons {
+        
         static let text: String = "text.alignleft"
         static let audio: String = "headphones"
     }
@@ -61,14 +64,16 @@ struct ModeSelectorView: View {
                 }
                 .padding(Const.Sizes.padding)
             }
-            .animation(.easeIn, value: viewStore.mode)
+            .animation(.easeIn, 
+                       value: viewStore.mode)
             .background {
                 Capsule()
                     .fill(Color.backgroundSecondColor)
             }
             .overlay(
                 RoundedRectangle(cornerRadius: Const.Sizes.borderCornerRadius)
-                    .stroke(Color.selectorBorderColor, lineWidth: Const.Sizes.lineWidth)
+                    .stroke(Color.selectorBorderColor, 
+                            lineWidth: Const.Sizes.lineWidth)
             )
             .onTapGesture {
                 viewStore.send(.selectorTaped)

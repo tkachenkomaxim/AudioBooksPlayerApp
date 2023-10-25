@@ -8,6 +8,8 @@
 import Foundation
 import ComposableArchitecture
 
+// MARK: - Player+Action
+
 extension Player {
     enum Action: Equatable {
         case viewAppeared

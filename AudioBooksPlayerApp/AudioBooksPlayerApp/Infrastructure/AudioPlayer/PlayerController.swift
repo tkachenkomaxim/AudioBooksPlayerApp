@@ -11,6 +11,7 @@ import Foundation
 // MARK: - Constants
 
 private enum Constants {
+    
     static let progressInterval: CMTime = .init(
         seconds: 0.5,
         preferredTimescale: CMTimeScale(NSEC_PER_SEC)
@@ -20,6 +21,7 @@ private enum Constants {
 // MARK: - Error
 
 enum PlayerControllerError: Error {
+    
     case itemLoadingFailed
 }
 
@@ -40,6 +42,7 @@ final class PlayerController {
         player: AVPlayer = .init(),
         notificationCenter: NotificationCenter = .default
     ) {
+        
         self.player = player
         self.notificationCenter = notificationCenter
     }
@@ -88,6 +91,7 @@ final class PlayerController {
     // MARK: - Private Func
 
     private func setupPlaybackFinishedObserver(for item: AVPlayerItem) {
+        
         notificationCenter.addObserver(
             self,
             selector: #selector(itemPlaybackDidFinish),
@@ -97,6 +101,7 @@ final class PlayerController {
     }
 
     private func removePlaybackFinishedObserver(for item: AVPlayerItem?) {
+        
         notificationCenter.removeObserver(
             self,
             name: Notification.Name.AVPlayerItemDidPlayToEndTime,
@@ -108,6 +113,7 @@ final class PlayerController {
 
     @objc
     private func itemPlaybackDidFinish() {
+        
         progressContinuation?.yield(.ended)
     }
 }

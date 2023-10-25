@@ -11,12 +11,14 @@ import ComposableArchitecture
 // MARK: - StoreService + DependencyKey
 
 private enum StoreServiceClientKey: DependencyKey {
+    
     static let liveValue = StoreService()
 }
 
 // MARK: - AudiobookService + DependencyValues
 
 extension DependencyValues {
+    
   var storeService: StoreService {
     get { self[StoreServiceClientKey.self] }
     set { self[StoreServiceClientKey.self] = newValue }

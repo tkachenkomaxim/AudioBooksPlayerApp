@@ -8,21 +8,28 @@
 import ComposableArchitecture
 import SwiftUI
 
+// MARK: - Constants
+
 private enum Const {
+    
     enum Sizes {
+        
         static let padding: CGFloat = 10.0
     }
     
     enum Poster {
+        
         static let topPadding: CGFloat = 35.0
         static let scale: CGFloat = 0.4
     }
     
     enum ChaptersCount {
+        
         static let topPadding: CGFloat = 35.0
     }
     
     enum ChapterContent {
+        
         static let height: CGFloat = 45.0
         static let lineLimit: Int = 2
         static let topPadding: CGFloat = 5.0
@@ -30,16 +37,20 @@ private enum Const {
     }
     
     enum Slider {
+        
         static let topPadding: CGFloat = 15.0
     }
     
     enum ModeSelector {
+        
         static let bottomPadding: CGFloat = 5.0
     }
 }
 
+// MARK: - View
 
 struct PlayerView: View {
+    
     let store: StoreOf<Player>
 
     var body: some View {
@@ -114,6 +125,8 @@ struct PlayerView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     

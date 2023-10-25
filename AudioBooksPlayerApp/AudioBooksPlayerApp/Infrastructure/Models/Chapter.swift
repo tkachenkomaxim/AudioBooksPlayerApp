@@ -8,6 +8,7 @@
 import Foundation
 
 struct Chapter: Equatable {
+    
     let title: String
     let audioURL: URL?
 }
@@ -15,7 +16,9 @@ struct Chapter: Equatable {
 // MARK: - Convenience init
 
 extension Chapter {
+    
     init(from answer: ChapterAnswer) {
+        
         title = answer.name
         audioURL = URL(string: answer.audio)
     }
@@ -24,7 +27,9 @@ extension Chapter {
 // MARK: - Mock
 
 extension Chapter {
+    
     static var mock: Chapter {
+        
         .init(
             title: "Chapter 1",
             audioURL: URL(string: "https://mock/chapter_1")

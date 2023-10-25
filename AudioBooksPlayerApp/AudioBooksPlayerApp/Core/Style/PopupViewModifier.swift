@@ -7,21 +7,34 @@
 import SwiftUI
 
 public struct PopupViewModifier<Popup: View>: ViewModifier {
-    public var isShow: Bool
-    @ViewBuilder public let popup: Popup
+    
+    // MARK: - Public Props
+    
+    public var isNeedToShow: Bool
+    
+    @ViewBuilder public let bottomPopup: Popup
+    
+    // MARK: - View
 
     public func body(content: Content) -> some View {
+        
         ZStack {
             content
-            if isShow {
-                popup
+            if isNeedToShow {
+                bottomPopup
             }
         }
     }
 }
 
+// MARK: - ViewModifier Extension
+
 public extension View {
-    func customPopup<Popup: View>(isShow: Bool, @ViewBuilder popup: () -> Popup) -> some View {
-        modifier(PopupViewModifier(isShow: isShow, popup: popup))
+    
+    func customPopup<Popup: View>(isShow: Bool,
+                                  @ViewBuilder popup: () -> Popup) -> some View {
+        
+        modifier(PopupViewModifier(isNeedToShow: isShow,
+                                   bottomPopup: popup))
     }
 }

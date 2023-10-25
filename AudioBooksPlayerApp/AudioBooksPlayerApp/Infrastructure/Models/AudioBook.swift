@@ -8,6 +8,7 @@
 import Foundation
 
 struct Audiobook: Equatable {
+    
     let title: String
     let imageURL: URL?
     let chapters: [Chapter]
@@ -16,6 +17,7 @@ struct Audiobook: Equatable {
 // MARK: - Convenience init
 
 extension Audiobook {
+    
     init(from answer: AudiobookAnswer) {
         title = answer.bookTitle
         imageURL = URL(string: answer.bookCover)
@@ -28,7 +30,9 @@ extension Audiobook {
 // MARK: - Mock
 
 extension Audiobook {
+    
     static var mock: Audiobook {
+        
         .init(
             title: "Mock audiobook",
             imageURL: URL(string: "https://mock/image.jpeg"),

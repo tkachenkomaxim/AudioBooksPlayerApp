@@ -7,12 +7,18 @@
 
 import SwiftUI
 
+// MARK: - Constant
+
 private enum Const {
+    
     static let spacing: CGFloat = 15
     static let stackBottom: CGFloat = 40
 }
 
+// MARK: - View
+
 public struct BaseBottomPopupView: View {
+    
     let title: String
     let subtitle: String
     let buttonTitle: String
@@ -60,9 +66,11 @@ public struct BaseBottomPopupView: View {
     }
 }
 
+// MARK: - Preview
 
 #Preview {
-    BaseBottomPopupView(title: "Unlock learning", 
+    
+    BaseBottomPopupView(title: "Unlock learning",
                         subtitle: "Grow on the go by listening and reading the world's best ideas",
                         buttonTitle: "Start Listening • $89,99") { }
 }

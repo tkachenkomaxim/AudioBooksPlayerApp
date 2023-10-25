@@ -9,7 +9,9 @@ import ComposableArchitecture
 import SwiftUI
 
 private enum Const {
+    
     enum Size {
+        
         static let spacing: CGFloat = 25.0
         
         static let nextButton: CGFloat = 20.0
@@ -18,6 +20,7 @@ private enum Const {
     }
     
     enum Icons {
+        
         static let previous = "backward.end.fill"
         static let seekBack = "gobackward.5"
         static let play = "play.fill"
@@ -28,6 +31,7 @@ private enum Const {
 }
 
 struct PlayerActionButtonsView: View {
+    
     let store: StoreOf<PlayerActionButtonsReducer>
 
     var body: some View {

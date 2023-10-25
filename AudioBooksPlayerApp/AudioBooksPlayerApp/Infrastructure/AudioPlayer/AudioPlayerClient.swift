@@ -11,7 +11,8 @@ import Dependencies
 // MARK: - AudioPlayer + DependencyValues
 
 extension DependencyValues {
-    var audioplayer: AudioPlayer {
+    
+    var player: AudioPlayer {
         get { self[AudioPlayer.self] }
         set { self[AudioPlayer.self] = newValue }
     }
@@ -20,6 +21,7 @@ extension DependencyValues {
 // MARK: - AudioPlayer + DependencyKey
 
 extension AudioPlayer: DependencyKey {
+    
     static var liveValue: AudioPlayer {
         .live
     }

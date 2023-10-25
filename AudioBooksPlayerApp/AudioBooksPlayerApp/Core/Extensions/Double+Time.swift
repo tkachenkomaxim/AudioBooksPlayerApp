@@ -1,15 +1,17 @@
 //
-//  Double+TimeCode.swift
+//  Double+Time.swift
 //  AudioBooksPlayerApp
 //
 //  Created by Maksym Tkachenko on 24.10.2023.
 //
 
 import Foundation
-import CoreMedia.CMTime
+
+// MARK: - Double+Time
 
 extension Double {
     var timeCode: String {
+        
         guard self != .infinity else { return "--:--" }
 
         let totalSeconds = Int(self)
@@ -24,18 +26,3 @@ extension Double {
         }
     }
 }
-
-extension Double {
-    func cmTime(timescale: UInt64 = NSEC_PER_SEC) -> CMTime {
-        CMTime(seconds: self, preferredTimescale: CMTimeScale(timescale))
-    }
-}
-
-import Foundation
-
-extension Float {
-    var stringWithTruncatedZero: String {
-        truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
-    }
-}
-

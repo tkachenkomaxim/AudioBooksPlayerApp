@@ -8,6 +8,7 @@
 import SwiftUI
 
 public extension CGFloat {
+    
     static var cornerRadius: CGFloat {
         5.0
     }

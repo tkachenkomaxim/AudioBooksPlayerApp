@@ -8,6 +8,7 @@
 import Foundation
 
 struct AudiobookAnswer: Decodable {
+    
     let bookTitle: String
     let bookCover: String
     let chapters: [ChapterAnswer]

@@ -34,16 +34,19 @@ final class StoreService: ObservableObject {
     // MARK: - Lifecycle
     
     init() {
+        
         self.updates = observeTransactionUpdates()
     }
     
     deinit {
+        
         self.updates?.cancel()
     }
     
     // MARK: - Public Func
     
     func purchase() async throws -> Bool {
+        
         let product = try await Product.products(for: productIds)
         let result = try await product.first?.purchase()
         
@@ -63,6 +66,7 @@ final class StoreService: ObservableObject {
     }
     
     func updatePurchasedProducts() async {
+        
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result else {
                 continue
@@ -82,6 +86,7 @@ final class StoreService: ObservableObject {
     
     private func observeTransactionUpdates() -> Task<Void, Never> {
         Task(priority: .background) {
+            
             for await _ in Transaction.updates {
                 
                 await self.updatePurchasedProducts()

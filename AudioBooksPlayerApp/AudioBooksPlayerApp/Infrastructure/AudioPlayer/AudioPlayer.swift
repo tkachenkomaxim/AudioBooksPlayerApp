@@ -12,12 +12,14 @@ import Foundation
 // MARK: - Error
 
 enum AudioPlayerError: Error {
+    
     case invalidItemDuration
 }
 
 // MARK: - Progress
 
 enum PlayerProgress: Equatable {
+    
     case value(Double)
     case ended
 }
@@ -25,6 +27,7 @@ enum PlayerProgress: Equatable {
 // MARK: - Actions
 
 struct AudioPlayer {
+    
     var itemAt: @Sendable (URL) async throws -> Double
     var progress: @Sendable () async -> AsyncStream<PlayerProgress>
     var play: @Sendable (_ rate: Float) async -> Void
@@ -38,6 +41,7 @@ struct AudioPlayer {
 // MARK: - Live Value
 
 extension AudioPlayer {
+    
     static let live: Self = {
         let controller = PlayerController()
 

@@ -8,5 +8,7 @@
 import Foundation
 
 struct AudiobookRequest {
-    static let url = URL(string: "https://raw.githubusercontent.com/tkachenkomaxim/booksarchive/main/books.json")!
+    
+    static let urlString = "https://raw.githubusercontent.com/tkachenkomaxim/booksarchive/main/books.json"
+    static let url = URL(string: urlString)!
 }

@@ -10,6 +10,7 @@ import SwiftUI
 // MARK: - Constants
 
 private enum Constants {
+    
     enum Sizes {
         static let padding: CGFloat = 10
     }

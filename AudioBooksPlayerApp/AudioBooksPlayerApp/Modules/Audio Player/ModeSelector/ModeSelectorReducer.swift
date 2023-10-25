@@ -10,15 +10,21 @@ import Foundation
 
 struct ModeSelectorReducer: Reducer {
     
+    // MARK: - State
+    
     struct State: Equatable {
         
         var mode: ModeSelector = .audio
     }
+    
+    // MARK: - Action
 
     enum Action: Equatable {
         
         case selectorTaped
     }
+    
+    // MARK: - Reduce
 
     func reduce(into state: inout State, action: Action) -> Effect<Action> {
         
@@ -29,6 +35,8 @@ struct ModeSelectorReducer: Reducer {
         }
     }
 }
+
+// MARK: - ModeSelector State Helper
 
 enum ModeSelector: Int {
     

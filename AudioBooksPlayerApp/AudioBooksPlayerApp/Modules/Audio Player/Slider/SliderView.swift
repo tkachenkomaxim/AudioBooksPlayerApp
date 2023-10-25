@@ -12,7 +12,9 @@ import UIKit.UISlider
 // MARK: - Constants
 
 private enum Const {
+    
     enum Sizes {
+        
         static let width: CGFloat = 50.0
     }
     
@@ -24,6 +26,7 @@ private enum Const {
     }
     
     enum Slider {
+        
         static let title: String = "Progress"
         static let color: UIColor = UIColor(Color.thumbColor)
         static let image: UIImage? = UIImage(
@@ -36,6 +39,7 @@ private enum Const {
 // MARK: - View
 
 struct SliderView: View {
+    
     let store: StoreOf<SliderReducer>
 
     var body: some View {

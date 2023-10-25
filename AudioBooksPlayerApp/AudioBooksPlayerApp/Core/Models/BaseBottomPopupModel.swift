@@ -9,7 +9,9 @@ import Foundation
 import ComposableArchitecture
 
 struct BaseBottomPopupModel<T: Equatable> : Equatable {
+    
     static func == (lhs: BaseBottomPopupModel, rhs: BaseBottomPopupModel) -> Bool {
+        
         lhs.title == rhs.title && lhs.content == rhs.content
     }
     

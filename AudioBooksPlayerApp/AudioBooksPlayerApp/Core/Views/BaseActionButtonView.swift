@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct BaseActionButtonView: View {
+    
+    // MARK: - Public Props
+    
     var icon: String = "play.fill"
     var fontSize: CGFloat = 35
     var color: Color = .black
     var isEnabled: Bool
     var action: () -> Void
+    
+    // MARK: - View
     
     var body: some View {
         Button {
@@ -23,7 +28,8 @@ struct BaseActionButtonView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: fontSize, height: fontSize)
         }
-        .foregroundColor(isEnabled ? .actionEnabledColor : .actionDisabledColor)
+        .foregroundColor(isEnabled ? 
+            .actionEnabledColor : .actionDisabledColor)
         .disabled(!isEnabled)
     }
 }

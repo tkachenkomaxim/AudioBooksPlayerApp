@@ -8,6 +8,8 @@
 import Foundation
 import ComposableArchitecture
 
+// MARK: - Player+State
+
 extension Player {
     struct State: Equatable {
         var isShowAlert: Bool {
@@ -19,7 +21,7 @@ extension Player {
         var imageURL: URL?
         var chapters: [Chapter] = []
         var currentChapterIndex: Int = Constants.defaultChapterIndex
-        var playbackRate: Float = Constants.Rate.standart
+        var playbackRate: Float = Constants.Rate.normal
 
         var progress: SliderReducer.State = .init()
         var controls: PlayerActionButtonsReducer.State = .init()
@@ -37,7 +39,7 @@ extension Player {
             return chapters[currentChapterIndex].title
         }
 
-        var rateTitle: String { "Speed \(playbackRate.stringWithTruncatedZero)x" }
+        var rateTitle: String { "Speed x\(playbackRate.stringWithTruncatedZero)" }
         var hasNextChapter: Bool { chapters.count - 1 > currentChapterIndex }
         var hasPreviousChapter: Bool { currentChapterIndex > .zero }
     }

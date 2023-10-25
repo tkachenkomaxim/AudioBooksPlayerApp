@@ -17,7 +17,7 @@ final class PlayerTests: XCTestCase {
         let store = TestStore(initialState: Player.State()) {
             Player()
         } withDependencies: {
-            $0.audioplayer.itemAt = { _ in throw AudioPlayerError.invalidItemDuration }
+            $0.player.itemAt = { _ in throw AudioPlayerError.invalidItemDuration }
         }
 
         // WHEN
@@ -51,7 +51,7 @@ final class PlayerTests: XCTestCase {
         let store = TestStore(initialState: Player.State()) {
             Player()
         } withDependencies: {
-            $0.audioplayer.progress = { .init {
+            $0.player.progress = { .init {
                 for progress in 1 ... 3 {
                     $0.yield(.value(Double(progress)))
                 }

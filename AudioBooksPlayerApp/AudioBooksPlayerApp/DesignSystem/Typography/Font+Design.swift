@@ -8,6 +8,7 @@
 import SwiftUI
 
 public extension Font {
+    
     static var textContent: Font {
         .system(size: 20, weight: .regular)
     }

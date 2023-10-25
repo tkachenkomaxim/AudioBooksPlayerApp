@@ -13,18 +13,23 @@ struct Player {
     
     @Dependency(\.storeService) var storeService
     @Dependency(\.audiobookService) var audiobookService
-    @Dependency(\.audioplayer) var audioplayer
+    @Dependency(\.player) var player
     
     // MARK: - Private Func
-    private func reduce(into state: inout State, controlsAction: PlayerActionButtonsReducer.Action) -> Effect<Action> {
+    
+    private func reduce(into state: inout State, 
+                        controlsAction: PlayerActionButtonsReducer.Action) -> Effect<Action> {
         switch controlsAction {
         case .nextTapped:
             if state.currentChapterIndex < state.chapters.count {
                 state.currentChapterIndex += 1
+                
+                return .run { send in
+                    await send(.chapterChanged)
+                }
             }
-            return .run { send in
-                await send(.chapterChanged)
-            }
+            
+            return .none
 
         case .previousTapped:
             state.currentChapterIndex -= 1
@@ -40,34 +45,36 @@ struct Player {
 
             return .run { [rate = state.playbackRate] _ in
                 if playerState.isPlaying {
-                    await audioplayer.pause()
+                    await player.pause()
                 } else {
-                    await audioplayer.play(rate)
+                    await player.play(rate)
                 }
             }
 
         case .seekBackTapped:
             return .run { _ in
-                await audioplayer.seekBackwardBy(Constants.Progress.seekBackwardInterval)
+                await player.seekBackwardBy(Constants.Progress.seekBackwardInterval)
             }
 
         case .seekForwardTapped:
             return .run { _ in
-                await audioplayer.seekForwardBy(Constants.Progress.seekForwardInterval)
+                await player.seekForwardBy(Constants.Progress.seekForwardInterval)
             }
         }
     }
 
-    private func reduce(into _: inout State, progressAction: SliderReducer.Action) -> Effect<Action> {
+    private func reduce(into _: inout State, 
+                        progressAction: SliderReducer.Action) -> Effect<Action> {
         switch progressAction {
         case let .sliderUpdated(progress):
             return .run { _ in
-                await audioplayer.seekTo(progress)
+                await player.seekTo(progress)
             }
         }
     }
 
-    private func reduce(into state: inout State, modeAction: ModeSelectorReducer.Action) -> Effect<Action> {
+    private func reduce(into state: inout State, 
+                        modeAction: ModeSelectorReducer.Action) -> Effect<Action> {
         switch modeAction {
         case .selectorTaped:
             state.alert = .init(title: "On development 😎",
@@ -97,11 +104,11 @@ struct Player {
         }
 
         return .run { send in
-            await audioplayer.pause()
+            await player.pause()
 
             await send(
                 .chapterLoaded(
-                    TaskResult { try await audioplayer.itemAt(chapterUrl) }
+                    TaskResult { try await player.itemAt(chapterUrl) }
                 )
             )
         }
@@ -193,7 +200,7 @@ extension Player: Reducer {
                 state.controls.hasPreviousChapter = state.hasPreviousChapter
 
                 return .run { send in
-                    for await progress in await audioplayer.progress() {
+                    for await progress in await player.progress() {
                         await send(.playbackProgressUpdated(progress))
                     }
                 }
@@ -234,7 +241,7 @@ extension Player: Reducer {
                 guard state.controls.playerState.isPlaying else { return .none }
 
                 return .run { [rate = state.playbackRate] _ in
-                    await audioplayer.changeSpeed(rate)
+                    await player.changeSpeed(rate)
                 }
 
             case .alertDismissed:
