@@ -10,21 +10,20 @@ import SwiftUI
 import UIKit.UISlider
 
 private enum Const {
-    enum Labels {
-        static let font: Font = .system(size: 13.0, weight: .regular, design: .rounded)
-        static let color: Color = .init(uiColor: .gray)
+    enum Sizes {
         static let width: CGFloat = 50.0
     }
     
     enum Progress {
-        static let title: String = "Progress"
+        
         static let color: UIColor = .systemBlue
         static let step: Double = 1.0
         static let minimumValue: Double = .zero
     }
     
-    enum Thumb {
-        static let color: Color = .init(uiColor: .systemBlue)
+    enum Slider {
+        static let title: String = "Progress"
+        static let color: UIColor = UIColor(Color.thumbColor)
         static let image: UIImage? = UIImage(
             systemName: "circle.fill",
             withConfiguration: UIImage.SymbolConfiguration(scale: .medium)
@@ -45,29 +44,29 @@ struct SliderView: View {
                 in: .zero ... viewStore.duration,
                 step: viewStore.step
             ) {
-                Text(Const.Progress.title)
+                Text(Const.Slider.title)
             } minimumValueLabel: {
                 Text(viewStore.current.timeCode)
-                    .font(Const.Labels.font)
-                    .foregroundColor(Const.Labels.color)
-                    .frame(width: Const.Labels.width)
+                    .font(.playerSliderMain)
+                    .foregroundColor(Color.sliderColor)
+                    .frame(width: Const.Sizes.width)
             } maximumValueLabel: {
                 Text(viewStore.duration.timeCode)
-                    .font(Const.Labels.font)
-                    .foregroundColor(Const.Labels.color)
-                    .frame(width: Const.Labels.width)
+                    .font(.playerSliderMain)
+                    .foregroundColor(Color.sliderColor)
+                    .frame(width: Const.Sizes.width)
             }
             .onAppear(perform: onAppear)
             .disabled(!viewStore.isEnabled)
-            .tint(Const.Thumb.color)
+            .tint(Color.thumbColor)
         }
     }
 
     private func onAppear() {
         UISlider.appearance()
-            .setThumbImage(Const.Thumb.image, for: .normal)
+            .setThumbImage(Const.Slider.image, for: .normal)
         UISlider.appearance()
-            .minimumTrackTintColor = Const.Progress.color
+            .minimumTrackTintColor = Const.Slider.color
     }
 }
 

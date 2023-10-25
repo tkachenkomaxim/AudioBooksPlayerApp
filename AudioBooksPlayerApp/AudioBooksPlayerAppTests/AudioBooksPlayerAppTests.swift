@@ -5,32 +5,99 @@
 //  Created by Maksym Tkachenko on 23.10.2023.
 //
 
-import XCTest
 @testable import AudioBooksPlayerApp
+import ComposableArchitecture
+import XCTest
 
-final class AudioBooksPlayerAppTests: XCTestCase {
+@MainActor
+final class PlayerTests: XCTestCase {
+    func testLoadingChapter() async {
+        // GIVEN
+        let store = TestStore(initialState: Player.State()) {
+            Player()
+        }
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+        // WHEN
+        await store.send(.audiobookLoaded(.success(.mock))) {
+            $0.imageURL = Audiobook.mock.imageURL
+            $0.chapters = Audiobook.mock.chapters
+        }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        // THEN
+        await store.receive(.chapterLoaded(.success(100.0))) {
+            $0.progress.status = .enabled(.init(time: 100.0, step: 1.0))
+            $0.controls.playerState = .paused
+            $0.controls.hasNextChapter = true
+            $0.controls.hasPreviousChapter = false
         }
     }
 
+    func testLoadingChapterFailure() async {
+        // GIVEN
+        let store = TestStore(initialState: Player.State()) {
+            Player()
+        } withDependencies: {
+            $0.audioplayer.loadItemAt = { _ in throw AudioPlayerError.invalidItemDuration }
+        }
+
+        // WHEN
+        await store.send(.audiobookLoaded(.success(.mock))) {
+            $0.imageURL = Audiobook.mock.imageURL
+            $0.chapters = Audiobook.mock.chapters
+        }
+
+        // THEN
+        await store.receive(.chapterLoaded(.failure(AudioPlayerError.invalidItemDuration))) {
+            $0.progress.status = .disabled
+            $0.controls.playerState = .disabled
+            $0.controls.hasNextChapter = true
+            $0.controls.hasPreviousChapter = false
+            $0.alert = AlertState {
+                TextState(Player.Constants.Alert.chapterLoadingFailed)
+            } actions: {
+                ButtonState(action: .retryChapterLoadingTapped) {
+                    TextState(Player.Constants.Alert.retry)
+                }
+
+                ButtonState(action: .alertDismissed) {
+                    TextState(Player.Constants.Alert.dismiss)
+                }
+            }
+        }
+    }
+
+    func testProgressUpdates() async {
+        // GIVEN
+        let store = TestStore(initialState: Player.State()) {
+            Player()
+        } withDependencies: {
+            $0.audioplayer.progress = { .init {
+                for progress in 1 ... 3 {
+                    $0.yield(.value(Double(progress)))
+                }
+                $0.finish()
+            } }
+        }
+
+        // WHEN
+        await store.send(.chapterLoaded(.success(100.0))) {
+            $0.progress.status = .enabled(.init(time: 100.0, step: 1.0))
+            $0.controls.playerState = .paused
+            $0.controls.hasNextChapter = false
+            $0.controls.hasPreviousChapter = false
+        }
+
+        // THEN
+        await store.receive(.playbackProgressUpdated(.value(1.0))) {
+            $0.progress.current = 1.0
+        }
+
+        await store.receive(.playbackProgressUpdated(.value(2.0))) {
+            $0.progress.current = 2.0
+        }
+
+        await store.receive(.playbackProgressUpdated(.value(3.0))) {
+            $0.progress.current = 3.0
+        }
+    }
 }

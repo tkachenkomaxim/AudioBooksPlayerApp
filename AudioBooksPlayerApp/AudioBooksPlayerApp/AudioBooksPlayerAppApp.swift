@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct AudioBooksPlayerAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PlayerView(
+                store: Store(
+                    initialState: Player.State()) {
+                        Player()
+                    }
+            )
         }
     }
 }

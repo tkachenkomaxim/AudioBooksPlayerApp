@@ -23,7 +23,7 @@ struct SpeedRateView: View {
                 .padding(Constants.Sizes.padding)
                 .background(Color.speedBtnBackground)
                 .cornerRadius(CGFloat.cornerRadius)
-                .font(.textSubTitle)
+                .font(.speedTitle)
         }
         .buttonStyle(.plain)
     }

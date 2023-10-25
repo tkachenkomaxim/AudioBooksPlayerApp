@@ -19,4 +19,12 @@ public extension Font {
     static var textSubTitle: Font {
         .system(size: 18, weight: .semibold)
     }
+    
+    static var playerSliderMain: Font {
+        .system(size: 13.0, weight: .regular, design: .rounded)
+    }
+    
+    static var speedTitle: Font {
+        .system(size: 13.0, weight: .semibold)
+    }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 public extension Color {
     static var mainColor: Color {
-        Color(UIColor(red: 254.0 / 255.0, green: 248.0 / 255.0, blue: 244.0 / 255.0, alpha: 1.0))
+        Color(UIColor(red: 254.0 / 255.0, green: 248.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0))
     }
     
     static var secondaryTextColor: Color {
@@ -43,5 +43,19 @@ public extension Color {
     static var speedBtnBackground: Color {
         .gray.opacity(0.15)
     }
-       
+    
+    static var sliderColor: Color {
+        .init(uiColor: .gray)
+    }
+    
+    static var actionEnabledColor: Color {
+        .init(uiColor: .label)
+    }
+    static var actionDisabledColor: Color {
+        .init(uiColor: .label).opacity(0.25)
+    }
+      
+    static var posterForground: Color {
+        .init(uiColor: .gray)
+    }
 }

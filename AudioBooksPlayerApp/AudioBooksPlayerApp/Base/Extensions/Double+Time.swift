@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreMedia.CMTime
 
 extension Double {
     var timeCode: String {
@@ -23,3 +24,18 @@ extension Double {
         }
     }
 }
+
+extension Double {
+    func cmTime(timescale: UInt64 = NSEC_PER_SEC) -> CMTime {
+        CMTime(seconds: self, preferredTimescale: CMTimeScale(timescale))
+    }
+}
+
+import Foundation
+
+extension Float {
+    var stringWithTruncatedZero: String {
+        truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
+

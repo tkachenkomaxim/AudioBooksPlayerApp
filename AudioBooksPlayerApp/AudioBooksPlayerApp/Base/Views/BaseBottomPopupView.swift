@@ -9,7 +9,7 @@ import SwiftUI
 
 private enum Const {
     static let spacing: CGFloat = 15
-    static let stackBottom: CGFloat = 30
+    static let stackBottom: CGFloat = 40
 }
 
 public struct BaseBottomPopupView: View {
@@ -49,14 +49,14 @@ public struct BaseBottomPopupView: View {
                     .padding()
                 }
                 .background(
-                    LinearGradient.whiteGradient
+                    LinearGradient.mainGradient
                 )
                 .frame(height: proxy.size.height / 2)
                 .frame(maxWidth: .infinity)
             }
             .frame(maxHeight: .infinity, 
                    alignment: .bottom)
-        }
+        }.ignoresSafeArea()
     }
 }
 

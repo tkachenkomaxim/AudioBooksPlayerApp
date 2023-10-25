@@ -14,7 +14,7 @@ public extension LinearGradient {
                 .init(color: .mainColor, location: 0),
                 .init(color: .clear, location: 1),
             ]),
-                startPoint:  UnitPoint(x: 0.5, y: 0.15),
+                startPoint:  UnitPoint(x: 0.5, y: 0.2),
                 endPoint: .top
         )
     }
@@ -25,7 +25,7 @@ public extension LinearGradient {
                 .init(color: .white, location: 0),
                 .init(color: .clear, location: 1)
             ]),
-                startPoint:  UnitPoint(x: 0.5, y: 0.15),
+                startPoint:  UnitPoint(x: 0.5, y: 0.2),
                 endPoint: .top
         )
     }
