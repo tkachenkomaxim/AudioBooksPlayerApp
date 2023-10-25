@@ -9,27 +9,33 @@ import AVFoundation
 import ComposableArchitecture
 import Foundation
 
+// MARK: - Error
+
 enum AudioPlayerError: Error {
     case invalidItemDuration
 }
+
+// MARK: - Progress
 
 enum PlayerProgress: Equatable {
     case value(Double)
     case ended
 }
 
+// MARK: - Actions
+
 struct AudioPlayer {
-    var loadItemAt: @Sendable (URL) async throws -> Double
+    var itemAt: @Sendable (URL) async throws -> Double
     var progress: @Sendable () async -> AsyncStream<PlayerProgress>
     var play: @Sendable (_ rate: Float) async -> Void
     var pause: @Sendable () async -> Void
     var seekTo: @Sendable (Double) async -> Void
     var seekForwardBy: @Sendable (Double) async -> Void
     var seekBackwardBy: @Sendable (Double) async -> Void
-    var setPlaybackRate: @Sendable (Float) async -> Void
+    var changeSpeed: @Sendable (Float) async -> Void
 }
 
-// MARK: - Live
+// MARK: - Live Value
 
 extension AudioPlayer {
     static let live: Self = {
@@ -70,38 +76,8 @@ extension AudioPlayer {
             let targetTimecode = max(currentTimecode.seconds - timeInterval, .zero)
 
             await controller.player.seek(to: targetTimecode.cmTime())
-        } setPlaybackRate: { rate in
+        } changeSpeed: { rate in
             controller.player.rate = rate
         }
     }()
-}
-
-// MARK: - AudioPlayer + DependencyValues
-
-extension DependencyValues {
-    var audioplayer: AudioPlayer {
-        get { self[AudioPlayer.self] }
-        set { self[AudioPlayer.self] = newValue }
-    }
-}
-
-// MARK: - AudioPlayer + DependencyKey
-
-extension AudioPlayer: DependencyKey {
-    static var liveValue: AudioPlayer {
-        .live
-    }
-
-    static var testValue: AudioPlayer {
-        AudioPlayer { _ in
-            100.0
-        } progress: {
-            .finished
-        } play: { _ in
-        } pause: {} seekTo: { _ in
-        } seekForwardBy: { _ in
-        } seekBackwardBy: { _ in
-        } setPlaybackRate: { _ in
-        }
-    }
 }

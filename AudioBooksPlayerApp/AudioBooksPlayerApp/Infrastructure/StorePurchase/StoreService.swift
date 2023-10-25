@@ -11,7 +11,14 @@ import SwiftUI
 
 final class StoreService: ObservableObject {
     
-    let productIds = ["subscription.premium"]
+    // MARK: - Public Props
+    
+    @AppStorage("hasPro", store: userDefaults)
+    var hasPro: Bool = false
+    
+    // MARK: - Private Props
+    
+    private let productIds = ["subscription.premium"]
     
     @Published
     private(set) var products: [Product] = []
@@ -21,11 +28,10 @@ final class StoreService: ObservableObject {
     
     private static var userDefaults = UserDefaults.standard
     
-    @AppStorage("hasPro", store: userDefaults)
-    var hasPro: Bool = false
-    
     private var productsLoaded = false
     private var updates: Task<Void, Never>? = nil
+    
+    // MARK: - Lifecycle
     
     init() {
         self.updates = observeTransactionUpdates()
@@ -35,31 +41,21 @@ final class StoreService: ObservableObject {
         self.updates?.cancel()
     }
     
+    // MARK: - Public Func
+    
     func purchase() async throws -> Bool {
         let product = try await Product.products(for: productIds)
         let result = try await product.first?.purchase()
         
         switch result {
         case let .success(.verified(transaction)):
-            // Successful purchase
+           
             await transaction.finish()
             await self.updatePurchasedProducts()
             
             return true
-        case .success(.unverified(_, _)):
-            // Successful purchase but transaction/receipt can't be verified
-            // Could be a jailbroken phone
-            break
-        case .pending:
-            // Transaction waiting on SCA (Strong Customer Authentication) or
-            // approval from Ask to Buy
-            break
-        case .userCancelled:
-            // ^^^
-            break
-        case .none:
-            break
-        @unknown default:
+            
+        default:
             break
         }
         
@@ -81,6 +77,8 @@ final class StoreService: ObservableObject {
         
         self.hasPro = !self.purchasedProductIDs.isEmpty
     }
+    
+    // MARK: - Private Func
     
     private func observeTransactionUpdates() -> Task<Void, Never> {
         Task(priority: .background) {

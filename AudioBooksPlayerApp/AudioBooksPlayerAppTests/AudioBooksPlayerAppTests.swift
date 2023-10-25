@@ -11,33 +11,13 @@ import XCTest
 
 @MainActor
 final class PlayerTests: XCTestCase {
-    func testLoadingChapter() async {
-        // GIVEN
-        let store = TestStore(initialState: Player.State()) {
-            Player()
-        }
-
-        // WHEN
-        await store.send(.audiobookLoaded(.success(.mock))) {
-            $0.imageURL = Audiobook.mock.imageURL
-            $0.chapters = Audiobook.mock.chapters
-        }
-
-        // THEN
-        await store.receive(.chapterLoaded(.success(100.0))) {
-            $0.progress.status = .enabled(.init(time: 100.0, step: 1.0))
-            $0.controls.playerState = .paused
-            $0.controls.hasNextChapter = true
-            $0.controls.hasPreviousChapter = false
-        }
-    }
-
+    
     func testLoadingChapterFailure() async {
         // GIVEN
         let store = TestStore(initialState: Player.State()) {
             Player()
         } withDependencies: {
-            $0.audioplayer.loadItemAt = { _ in throw AudioPlayerError.invalidItemDuration }
+            $0.audioplayer.itemAt = { _ in throw AudioPlayerError.invalidItemDuration }
         }
 
         // WHEN
@@ -65,7 +45,7 @@ final class PlayerTests: XCTestCase {
             }
         }
     }
-
+    
     func testProgressUpdates() async {
         // GIVEN
         let store = TestStore(initialState: Player.State()) {
@@ -98,6 +78,27 @@ final class PlayerTests: XCTestCase {
 
         await store.receive(.playbackProgressUpdated(.value(3.0))) {
             $0.progress.current = 3.0
+        }
+    }
+    
+    func testLoadingChapter() async {
+        // GIVEN
+        let store = TestStore(initialState: Player.State()) {
+            Player()
+        }
+
+        // WHEN
+        await store.send(.audiobookLoaded(.success(.mock))) {
+            $0.imageURL = Audiobook.mock.imageURL
+            $0.chapters = Audiobook.mock.chapters
+        }
+
+        // THEN
+        await store.receive(.chapterLoaded(.success(100.0))) {
+            $0.progress.status = .enabled(.init(time: 100.0, step: 1.0))
+            $0.controls.playerState = .paused
+            $0.controls.hasNextChapter = true
+            $0.controls.hasPreviousChapter = false
         }
     }
 }

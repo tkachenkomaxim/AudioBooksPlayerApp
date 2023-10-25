@@ -27,4 +27,12 @@ public extension Font {
     static var speedTitle: Font {
         .system(size: 13.0, weight: .semibold)
     }
+    
+    static var chapterTitle: Font {
+        .system(size: 13.0, weight: .medium, design: .rounded)
+    }
+    
+    static var chapterContent: Font {
+        .system(size: 17.0, design: .rounded)
+    }
 }

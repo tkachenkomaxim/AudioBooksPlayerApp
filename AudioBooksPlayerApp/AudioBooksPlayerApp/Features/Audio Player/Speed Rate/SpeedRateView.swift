@@ -7,11 +7,15 @@
 
 import SwiftUI
 
+// MARK: - Constants
+
 private enum Constants {
     enum Sizes {
         static let padding: CGFloat = 10
     }
 }
+
+// MARK: - View
 
 struct SpeedRateView: View {
     let title: String
@@ -28,6 +32,8 @@ struct SpeedRateView: View {
         .buttonStyle(.plain)
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     SpeedRateView(title: "Speed 1x",

@@ -14,6 +14,8 @@ struct Position: Equatable {
     let step: Double
 }
 
+// MARK: - Slider Status
+
 enum SliderStatus: Equatable {
     
     case disabled
@@ -43,6 +45,9 @@ enum SliderStatus: Equatable {
 }
 
 struct SliderReducer: Reducer {
+    
+    // MARK: - State
+    
     struct State: Equatable {
         var current: Double = .zero
         var status: SliderStatus = .disabled
@@ -51,11 +56,15 @@ struct SliderReducer: Reducer {
         var duration: Double { status.duration }
         var step: Double { status.step }
     }
+    
+    // MARK: - Action
 
     enum Action: Equatable {
         case sliderUpdated(Double)
     }
 
+    // MARK: - Reduce
+    
     func reduce(into _: inout State, action _: Action) -> Effect<Action> {
         .none
     }

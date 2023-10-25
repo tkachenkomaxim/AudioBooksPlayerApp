@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct ChapterDTO: Decodable  {
-    let order: Int
+struct ChapterAnswer: Decodable  {
+    let id: Int
     let name: String
     let audio: String
 }

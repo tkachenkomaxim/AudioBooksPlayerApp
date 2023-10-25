@@ -8,6 +8,8 @@
 import AVFoundation
 import Foundation
 
+// MARK: - Constants
+
 private enum Constants {
     static let progressInterval: CMTime = .init(
         seconds: 0.5,
@@ -15,15 +17,24 @@ private enum Constants {
     )
 }
 
+// MARK: - Error
+
 enum PlayerControllerError: Error {
     case itemLoadingFailed
 }
 
 final class PlayerController {
+    
+    // MARK: - Public Props
+    
     let player: AVPlayer
+    
+    // MARK: - Private Props
 
     private let notificationCenter: NotificationCenter
     private var progressContinuation: AsyncStream<PlayerProgress>.Continuation?
+    
+    // MARK: - Lifecycle
 
     init(
         player: AVPlayer = .init(),
@@ -32,6 +43,8 @@ final class PlayerController {
         self.player = player
         self.notificationCenter = notificationCenter
     }
+    
+    // MARK: - Public Func
 
     func fetchDuration(
         of playerItem: AVPlayerItem,
@@ -72,7 +85,7 @@ final class PlayerController {
         }
     }
 
-    // MARK: - Private helpers
+    // MARK: - Private Func
 
     private func setupPlaybackFinishedObserver(for item: AVPlayerItem) {
         notificationCenter.addObserver(
@@ -90,6 +103,8 @@ final class PlayerController {
             object: item
         )
     }
+    
+    // MARK: - Selectors
 
     @objc
     private func itemPlaybackDidFinish() {

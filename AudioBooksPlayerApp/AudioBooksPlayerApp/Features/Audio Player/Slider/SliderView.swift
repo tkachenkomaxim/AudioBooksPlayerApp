@@ -9,6 +9,8 @@ import ComposableArchitecture
 import SwiftUI
 import UIKit.UISlider
 
+// MARK: - Constants
+
 private enum Const {
     enum Sizes {
         static let width: CGFloat = 50.0
@@ -30,6 +32,8 @@ private enum Const {
         )
     }
 }
+
+// MARK: - View
 
 struct SliderView: View {
     let store: StoreOf<SliderReducer>
@@ -70,6 +74,7 @@ struct SliderView: View {
     }
 }
 
+// MARK: - Preview
 
 #Preview {
     SliderView(

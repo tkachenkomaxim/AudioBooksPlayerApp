@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Audiobook {
+struct Audiobook: Equatable {
     let title: String
     let imageURL: URL?
     let chapters: [Chapter]
@@ -16,18 +16,14 @@ struct Audiobook {
 // MARK: - Convenience init
 
 extension Audiobook {
-    init(from dtoModel: AudiobookDTO) {
-        title = dtoModel.bookTitle
-        imageURL = URL(string: dtoModel.bookCover)
-        chapters = dtoModel.chapters
-            .sorted { $0.order < $1.order }
+    init(from answer: AudiobookAnswer) {
+        title = answer.bookTitle
+        imageURL = URL(string: answer.bookCover)
+        chapters = answer.chapters
+            .sorted { $0.id < $1.id }
             .compactMap { Chapter(from: $0) }
     }
 }
-
-// MARK: - Audiobook + Equatable
-
-extension Audiobook: Equatable {}
 
 // MARK: - Mock
 

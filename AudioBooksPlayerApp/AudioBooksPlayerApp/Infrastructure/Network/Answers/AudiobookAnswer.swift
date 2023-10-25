@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct AudiobookDTO: Decodable {
+struct AudiobookAnswer: Decodable {
     let bookTitle: String
     let bookCover: String
-    let chapters: [ChapterDTO]
+    let chapters: [ChapterAnswer]
 }

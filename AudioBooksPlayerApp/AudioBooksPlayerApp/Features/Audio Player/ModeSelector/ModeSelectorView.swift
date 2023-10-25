@@ -8,6 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
+// MARK: - Constants
+
 private enum Const {
     enum Sizes {
         static let padding: CGFloat = 15.0
@@ -21,6 +23,8 @@ private enum Const {
         static let audio: String = "headphones"
     }
 }
+
+// MARK: - View
 
 struct ModeSelectorView: View {
     
@@ -72,6 +76,8 @@ struct ModeSelectorView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     

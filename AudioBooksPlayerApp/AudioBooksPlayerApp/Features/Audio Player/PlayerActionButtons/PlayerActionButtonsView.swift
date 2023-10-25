@@ -37,31 +37,31 @@ struct PlayerActionButtonsView: View {
                 BaseActionButtonView(icon: Const.Icons.previous,
                                      fontSize: Const.Size.nextButton,
                                      isEnabled: viewStore.hasPreviousChapter) {
-                    viewStore.send(.previousButtonTapped)
+                    viewStore.send(.previousTapped)
                 }
                 
                 BaseActionButtonView(icon: Const.Icons.seekBack,
                                      fontSize: Const.Size.seekButtons,
                                      isEnabled: viewStore.canSeekBackward) {
-                    viewStore.send(.seekBackButtonTapped)
+                    viewStore.send(.seekBackTapped)
                 }
                 
                 BaseActionButtonView(icon: viewStore.playerState.isPlaying ? Const.Icons.pause : Const.Icons.play,
                                      fontSize: Const.Size.playButton,
                                      isEnabled: viewStore.playerState.isEnabled) {
-                    viewStore.send(.playButtonTapped)
+                    viewStore.send(.playTapped)
                 }
                 
                 BaseActionButtonView(icon: Const.Icons.seekForward,
                                      fontSize: Const.Size.seekButtons,
                                      isEnabled: viewStore.canSeekForward) {
-                    viewStore.send(.seekForwardButtonTapped)
+                    viewStore.send(.seekForwardTapped)
                 }
                 
                 BaseActionButtonView(icon: Const.Icons.next,
                                      fontSize: Const.Size.nextButton,
                                      isEnabled: viewStore.hasNextChapter) {
-                    viewStore.send(.nextButtonTapped)
+                    viewStore.send(.nextTapped)
                 }
             }
         }

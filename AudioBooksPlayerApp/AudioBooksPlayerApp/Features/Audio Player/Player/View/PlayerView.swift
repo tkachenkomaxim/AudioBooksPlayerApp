@@ -10,37 +10,31 @@ import SwiftUI
 
 private enum Const {
     enum Sizes {
-        static let background: Color = .mainColor
         static let padding: CGFloat = 10.0
     }
     
-    enum ChaptersCountLabel {
-        static let font: Font = .system(size: 13.0, weight: .medium, design: .rounded)
-        static let color: Color = .gray
+    enum Poster {
         static let topPadding: CGFloat = 35.0
-    }
-    
-    enum ChapterTitleLabel {
-        static let font: Font = .system(size: 17.0, design: .rounded)
-        static let height: CGFloat = 45.0
-        static let lineLimit: Int = 2
-        static let topPadding: CGFloat = 10.0
-    }
-    
-    enum Controls {
-        static let topPadding: CGFloat = 65.0
-    }
-    
-    enum Cover {
         static let scale: CGFloat = 0.4
     }
     
-    enum Progress {
-        static let topPadding: CGFloat = 25.0
+    enum ChaptersCount {
+        static let topPadding: CGFloat = 35.0
     }
     
-    enum Rate {
+    enum ChapterContent {
+        static let height: CGFloat = 45.0
+        static let lineLimit: Int = 2
+        static let topPadding: CGFloat = 5.0
+        static let verticalPadding: CGFloat = 40
+    }
+    
+    enum Slider {
         static let topPadding: CGFloat = 15.0
+    }
+    
+    enum ModeSelector {
+        static let bottomPadding: CGFloat = 5.0
     }
 }
 
@@ -54,20 +48,21 @@ struct PlayerView: View {
                 VStack(spacing: .zero) {
                    URLImageView(url: viewStore.imageURL)
                         .scaledToFit()
-                        .frame(height: proxy.size.height * Const.Cover.scale)
-                        .padding(.top, 25)
+                        .frame(height: proxy.size.height * Const.Poster.scale)
+                        .padding(.top, Const.Poster.topPadding)
 
                     Text(viewStore.chaptersCountTitle.uppercased())
-                        .font(Const.ChaptersCountLabel.font)
-                        .foregroundColor(Const.ChaptersCountLabel.color)
-                        .padding(.top, 25)
+                        .font(.chapterTitle)
+                        .foregroundColor(.posterForground)
+                        .padding(.top, Const.ChaptersCount.topPadding)
 
                     Text(viewStore.chapterTitle)
-                        .font(Const.ChapterTitleLabel.font)
+                        .font(.chapterContent)
                         .multilineTextAlignment(.center)
-                        .frame(height: Const.ChapterTitleLabel.height)
-                        .lineLimit(Const.ChapterTitleLabel.lineLimit)
-                        .padding(.top, 0)
+                        .frame(height: Const.ChapterContent.height)
+                        .lineLimit(Const.ChapterContent.lineLimit)
+                        .padding(.top, Const.ChapterContent.topPadding)
+                        .padding(.horizontal, Const.ChapterContent.verticalPadding)
 
                     SliderView(
                         store: store.scope(
@@ -75,12 +70,12 @@ struct PlayerView: View {
                             action: Player.Action.progress
                         )
                     )
-                    .padding(.top, 15)
+                    .padding(.top, Const.Slider.topPadding)
 
                     SpeedRateView(title: viewStore.rateTitle) {
                         viewStore.send(.rateButtonTapped)
                     }
-                    .padding(.top, Const.Rate.topPadding)
+                    .padding(.top, Const.Slider.topPadding)
 
                     Spacer()
                     
@@ -99,21 +94,23 @@ struct PlayerView: View {
                             action: Player.Action.mode
                         )
                     )
-                    .padding(.bottom, 5)
+                    .padding(.bottom, Const.ModeSelector.bottomPadding)
                 }
                 .onAppear {
                     viewStore.send(.viewAppeared)
                 }
-                .customPopup(isShow: !viewStore.state.isPremium) {
-                    BaseBottomPopupView(title: "Unlock learning",
-                                        subtitle: "Grow on the go by listening and reading the world's best ideas",
-                                        buttonTitle: "Start Listening • $89,99") { 
-                        viewStore.send(.buyPremiumTapped)
+                .customPopup(isShow: viewStore.state.isShowAlert) {
+                    BaseBottomPopupView(title: viewStore.state.alert?.title ?? "",
+                                        subtitle: viewStore.state.alert?.content ?? "",
+                                        buttonTitle: viewStore.state.alert?.buttonTitle ?? "") {
+                        if let action = viewStore.state.alert?.actionOnTap {
+                            viewStore.send(action)
+                        }
                     }
                 }
             }
             .padding(Const.Sizes.padding)
-            .background(Const.Sizes.background.ignoresSafeArea())
+            .background(Color.mainColor.ignoresSafeArea())
         }
     }
 }

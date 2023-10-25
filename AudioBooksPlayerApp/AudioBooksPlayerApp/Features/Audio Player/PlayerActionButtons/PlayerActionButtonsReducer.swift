@@ -30,11 +30,11 @@ struct PlayerActionButtonsReducer: Reducer {
 
     enum Action {
         
-        case previousButtonTapped
-        case seekBackButtonTapped
-        case playButtonTapped
-        case seekForwardButtonTapped
-        case nextButtonTapped
+        case previousTapped
+        case seekBackTapped
+        case playTapped
+        case seekForwardTapped
+        case nextTapped
     }
 
     func reduce(into _: inout State, action _: Action) -> Effect<Action> {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Chapter {
+struct Chapter: Equatable {
     let title: String
     let audioURL: URL?
 }
@@ -15,15 +15,11 @@ struct Chapter {
 // MARK: - Convenience init
 
 extension Chapter {
-    init(from dtoModel: ChapterDTO) {
-        title = dtoModel.name
-        audioURL = URL(string: dtoModel.audio)
+    init(from answer: ChapterAnswer) {
+        title = answer.name
+        audioURL = URL(string: answer.audio)
     }
 }
-
-// MARK: - Chapter + Equatable
-
-extension Chapter: Equatable {}
 
 // MARK: - Mock
 
