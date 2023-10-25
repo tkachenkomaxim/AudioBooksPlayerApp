@@ -21,6 +21,7 @@ private enum Const {
         
         static let topPadding: CGFloat = 35.0
         static let scale: CGFloat = 0.4
+        static let radius: CGFloat = 10.0
     }
     
     enum ChaptersCount {
@@ -61,6 +62,7 @@ struct PlayerView: View {
                         .scaledToFit()
                         .frame(height: proxy.size.height * Const.Poster.scale)
                         .padding(.top, Const.Poster.topPadding)
+                        .cornerRadius(Const.Poster.radius)
 
                     Text(viewStore.chaptersCountTitle.uppercased())
                         .font(.chapterTitle)
@@ -83,7 +85,7 @@ struct PlayerView: View {
                     )
                     .padding(.top, Const.Slider.topPadding)
 
-                    SpeedRateView(title: viewStore.rateTitle) {
+                    SpeedRateView(title: viewStore.speedTitle) {
                         viewStore.send(.rateButtonTapped)
                     }
                     .padding(.top, Const.Slider.topPadding)

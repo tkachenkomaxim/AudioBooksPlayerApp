@@ -37,6 +37,6 @@ struct SpeedRateView: View {
 // MARK: - Preview
 
 #Preview {
-    SpeedRateView(title: "Speed 1x",
+    SpeedRateView(title: "Speed x1",
                   onButtonTapped: { })
 }

@@ -21,8 +21,8 @@ struct Player {
                         controlsAction: PlayerActionButtonsReducer.Action) -> Effect<Action> {
         switch controlsAction {
         case .nextTapped:
-            if state.currentChapterIndex < state.chapters.count {
-                state.currentChapterIndex += 1
+            if state.currentChapter < state.chapters.count {
+                state.currentChapter += 1
                 
                 return .run { send in
                     await send(.chapterChanged)
@@ -32,7 +32,7 @@ struct Player {
             return .none
 
         case .previousTapped:
-            state.currentChapterIndex -= 1
+            state.currentChapter -= 1
 
             return .run { send in
                 await send(.chapterChanged)
@@ -43,7 +43,7 @@ struct Player {
             guard playerState.isEnabled else { return .none }
             state.controls.playerState = playerState.isPlaying ? .paused : .playing
 
-            return .run { [rate = state.playbackRate] _ in
+            return .run { [rate = state.speed] _ in
                 if playerState.isPlaying {
                     await player.pause()
                 } else {
@@ -77,11 +77,7 @@ struct Player {
                         modeAction: ModeSelectorReducer.Action) -> Effect<Action> {
         switch modeAction {
         case .selectorTaped:
-            state.alert = .init(title: "On development 😎",
-                                content: Constants.Alert.modeUnavailable,
-                                buttonTitle: "Ok",
-                                actionOnTap: .modeAlertDismissed
-            )
+            state.alert = popup(.notImplemented)
         }
 
         return .none
@@ -98,7 +94,7 @@ struct Player {
     }
 
     private func loadCurrentChapter(for state: inout State) -> Effect<Action> {
-        guard let chapterUrl = state.chapters[state.currentChapterIndex].audioURL
+        guard let chapterUrl = state.chapters[state.currentChapter].audioURL
         else {
             return .none
         }
@@ -146,12 +142,9 @@ extension Player: Reducer {
                 state.isPremium = storeService.hasPro
 
                 if !state.isPremium {
-                    state.alert = .init(title: "Unlock learning",
-                                        content: "Grow on the go by listening and reading the world's best ideas",
-                                        buttonTitle: "Start Listening • $89,99",
-                                        actionOnTap: .buyPremiumTapped
-                    )
+                    state.alert = popup(.subcribePremium)
                 }
+                
                 return loadAudiobook()
                 
             case .buyPremiumTapped:
@@ -170,10 +163,7 @@ extension Player: Reducer {
                 return .none
                 
             case .purchaseError:
-                state.alert = .init(title: "Oops",
-                                    content: "Your purchase failed. Please try again or write to support",
-                                    buttonTitle: "Retry",
-                                    actionOnTap: .buyPremiumTapped)
+                state.alert = popup(.purchaseError)
                 return .none
 
             case let .audiobookLoaded(.success(audiobook)):
@@ -184,11 +174,7 @@ extension Player: Reducer {
 
             case .audiobookLoaded(.failure):
                 
-                state.alert = .init(title: "Oops",
-                                    content: Constants.Alert.bookLoadingFailed,
-                                    buttonTitle: "Retry",
-                                    actionOnTap: .retryAudiobookLoadingTapped
-                )
+                state.alert = popup(.bookLoadingError)
 
                 return .none
 
@@ -201,7 +187,7 @@ extension Player: Reducer {
 
                 return .run { send in
                     for await progress in await player.progress() {
-                        await send(.playbackProgressUpdated(progress))
+                        await send(.sliderUpdated(progress))
                     }
                 }
 
@@ -211,11 +197,7 @@ extension Player: Reducer {
                 state.controls.hasNextChapter = state.hasNextChapter
                 state.controls.hasPreviousChapter = state.hasPreviousChapter
                 
-                state.alert = .init(title: "Oops",
-                                    content: Constants.Alert.chapterLoadingFailed,
-                                    buttonTitle: "Retry",
-                                    actionOnTap: .retryChapterLoadingTapped
-                )
+                state.alert = popup(.chapterLoadingError)
                 
                 return .none
 
@@ -224,7 +206,7 @@ extension Player: Reducer {
                 state.progress.status = .disabled
                 return loadCurrentChapter(for: &state)
 
-            case let .playbackProgressUpdated(progress):
+            case let .sliderUpdated(progress):
                 switch progress {
                 case let .value(progress):
                     state.progress.current = progress
@@ -237,10 +219,10 @@ extension Player: Reducer {
                 }
 
             case .rateButtonTapped:
-                state.playbackRate = nextPlaybackRate(for: state.playbackRate)
+                state.speed = nextPlaybackRate(for: state.speed)
                 guard state.controls.playerState.isPlaying else { return .none }
 
-                return .run { [rate = state.playbackRate] _ in
+                return .run { [rate = state.speed] _ in
                     await player.changeSpeed(rate)
                 }
 
@@ -248,7 +230,7 @@ extension Player: Reducer {
                 state.alert = nil
                 return .none
 
-            case .modeAlertDismissed:
+            case .infoAlertDismissed:
                 state.alert = nil
                 state.mode.mode = .audio
                 return .none

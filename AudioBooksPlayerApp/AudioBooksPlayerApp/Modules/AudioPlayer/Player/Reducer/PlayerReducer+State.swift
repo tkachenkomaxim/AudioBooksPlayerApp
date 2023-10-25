@@ -12,6 +12,7 @@ import ComposableArchitecture
 
 extension Player {
     struct State: Equatable {
+        
         var isShowAlert: Bool {
             return alert != nil
         }
@@ -20,8 +21,8 @@ extension Player {
         
         var imageURL: URL?
         var chapters: [Chapter] = []
-        var currentChapterIndex: Int = Constants.defaultChapterIndex
-        var playbackRate: Float = Constants.Rate.normal
+        var currentChapter: Int = Constants.Progress.defaultChapter
+        var speed: Float = Constants.Rate.normal
 
         var progress: SliderReducer.State = .init()
         var controls: PlayerActionButtonsReducer.State = .init()
@@ -30,17 +31,17 @@ extension Player {
         var alert: BaseBottomPopupModel<Action>?
 
         var chaptersCountTitle: String {
-            guard !chapters.isEmpty else { return "Keypoints unavailable" }
-            return "Key point \(currentChapterIndex + 1) of \(chapters.count)"
+            guard !chapters.isEmpty else { return String.localizedString(for: "KeyUnv") }
+            return "Key point \(currentChapter + 1) of \(chapters.count)"
         }
 
         var chapterTitle: String {
-            guard chapters.count > currentChapterIndex else { return "Description unavailable" }
-            return chapters[currentChapterIndex].title
+            guard chapters.count > currentChapter else { return String.localizedString(for: "DescUnv") }
+            return chapters[currentChapter].title
         }
 
-        var rateTitle: String { "Speed x\(playbackRate.stringWithTruncatedZero)" }
-        var hasNextChapter: Bool { chapters.count - 1 > currentChapterIndex }
-        var hasPreviousChapter: Bool { currentChapterIndex > .zero }
+        var speedTitle: String { "Speed x\(speed.stringWithTruncatedZero)" }
+        var hasNextChapter: Bool { chapters.count - 1 > currentChapter }
+        var hasPreviousChapter: Bool { currentChapter > .zero }
     }
 }

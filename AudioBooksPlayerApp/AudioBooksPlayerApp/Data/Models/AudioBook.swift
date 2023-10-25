@@ -26,18 +26,3 @@ extension Audiobook {
             .compactMap { Chapter(from: $0) }
     }
 }
-
-// MARK: - Mock
-
-extension Audiobook {
-    
-    static var mock: Audiobook {
-        
-        .init(
-            title: "Mock audiobook",
-            imageURL: URL(string: "https://mock/image.jpeg"),
-            chapters: Chapter.mocks
-        )
-    }
-}
-

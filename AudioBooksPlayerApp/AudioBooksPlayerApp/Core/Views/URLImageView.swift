@@ -9,9 +9,10 @@ import SwiftUI
 
 // MARK: - Constant
 
-private enum Constants {
+private enum Const {
     
     static let placeholder: String = "doc.plaintext.fill"
+    static let radius: CGFloat = 10
 }
 
 struct URLImageView: View {
@@ -29,15 +30,16 @@ struct URLImageView: View {
             case .empty:
                 ProgressView()
             case .failure:
-                Image(systemName: Constants.placeholder)
+                Image(systemName: Const.placeholder)
                     .resizable()
                     .foregroundColor(.posterForground)
             case let .success(image):
                 image.resizable()
             @unknown default:
-                Image(Constants.placeholder)
+                Image(Const.placeholder)
                     .resizable()
             }
         }
+        .cornerRadius(Const.radius)
     }
 }

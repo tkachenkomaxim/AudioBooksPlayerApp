@@ -24,13 +24,13 @@ extension Player {
         
         case audiobookLoaded(TaskResult<Audiobook>)
         case chapterLoaded(TaskResult<Double>)
-        case playbackProgressUpdated(PlayerProgress)
+        case sliderUpdated(PlayerSlider)
 
         case chapterChanged
         case rateButtonTapped
 
         case alertDismissed
-        case modeAlertDismissed
+        case infoAlertDismissed
         case retryChapterLoadingTapped
         case retryAudiobookLoadingTapped
     }

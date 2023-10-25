@@ -34,7 +34,7 @@ final class PlayerController {
     // MARK: - Private Props
 
     private let notificationCenter: NotificationCenter
-    private var progressContinuation: AsyncStream<PlayerProgress>.Continuation?
+    private var progressContinuation: AsyncStream<PlayerSlider>.Continuation?
     
     // MARK: - Lifecycle
 
@@ -68,7 +68,7 @@ final class PlayerController {
         }
     }
 
-    func streamPlaybackProgress(into continuation: AsyncStream<PlayerProgress>.Continuation) {
+    func streamPlaybackProgress(into continuation: AsyncStream<PlayerSlider>.Continuation) {
         progressContinuation = continuation
 
         let progressObserer = player.addPeriodicTimeObserver(

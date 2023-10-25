@@ -13,12 +13,12 @@ import Foundation
 
 enum AudioPlayerError: Error {
     
-    case invalidItemDuration
+    case invalidDuration
 }
 
 // MARK: - Progress
 
-enum PlayerProgress: Equatable {
+enum PlayerSlider: Equatable {
     
     case value(Double)
     case ended
@@ -29,7 +29,7 @@ enum PlayerProgress: Equatable {
 struct AudioPlayer {
     
     var itemAt: @Sendable (URL) async throws -> Double
-    var progress: @Sendable () async -> AsyncStream<PlayerProgress>
+    var progress: @Sendable () async -> AsyncStream<PlayerSlider>
     var play: @Sendable (_ rate: Float) async -> Void
     var pause: @Sendable () async -> Void
     var seekTo: @Sendable (Double) async -> Void
@@ -54,12 +54,12 @@ extension AudioPlayer {
             }
 
             guard let itemDuration = try await stream.first(where: { _ in true }) else {
-                throw AudioPlayerError.invalidItemDuration
+                throw AudioPlayerError.invalidDuration
             }
 
             return itemDuration
         } progress: {
-            AsyncStream<PlayerProgress> { continuation in
+            AsyncStream<PlayerSlider> { continuation in
                 controller.streamPlaybackProgress(into: continuation)
             }
         } play: { rate in

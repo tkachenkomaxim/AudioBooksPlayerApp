@@ -16,6 +16,7 @@ extension Player {
         
         enum Progress {
             
+            static let defaultChapter: Int = 0
             static let step: Double = 1.0
             static let seekForwardInterval: Double = 10.0
             static let seekBackwardInterval: Double = 5.0
@@ -28,17 +29,6 @@ extension Player {
             static let step: Float = 0.25
             static let normal: Float = 1.0
         }
-
-        enum Alert {
-            static let bookLoadingFailed: String = "Audiobook loading failed ☹️"
-            static let chapterLoadingFailed: String = "Sorry, chapter audio loading failed ☹️"
-            static let chapterAudioUnavailable: String = "Sorry, the audio for this chaptes is unavailable ☹️"
-            static let modeUnavailable: String = "This functionality is currently under development. Stay tuned for upcoming releases"
-            static let dismiss: String = "OK"
-            static let retry: String = "Retry"
-        }
-
-        static let defaultChapterIndex: Int = 0
     }
 }
 

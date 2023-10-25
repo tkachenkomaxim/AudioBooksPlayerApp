@@ -25,10 +25,4 @@ extension AudiobookService: DependencyKey {
     static var liveValue: AudiobookService {
         .live
     }
-
-    static var testValue: AudiobookService {
-        AudiobookService {
-            .mock
-        }
-    }
 }

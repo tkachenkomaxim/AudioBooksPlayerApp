@@ -69,8 +69,8 @@ public struct BaseBottomPopupView: View {
 // MARK: - Preview
 
 #Preview {
-    
-    BaseBottomPopupView(title: "Unlock learning",
-                        subtitle: "Grow on the go by listening and reading the world's best ideas",
-                        buttonTitle: "Start Listening • $89,99") { }
+
+    BaseBottomPopupView(title: String.localizedString(for: "StorePurchaseTitle"),
+                        subtitle: String.localizedString(for: "StorePurchaseContent"),
+                        buttonTitle: String.localizedString(for: "StorePurchaseButton")) { }
 }
