@@ -150,8 +150,9 @@ extension Player: Reducer {
             case .buyPremiumTapped:
                 return .run { send in
                     do {
-                        let _ = try await storeService.purchase()
-                        await send(.purchased)
+                        let flag = try await storeService.purchase()
+
+                        await send(flag ? .purchased : .purchaseError)
                     } catch {
                         await send(.purchaseError)
                     }
