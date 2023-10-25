@@ -13,22 +13,25 @@ import ComposableArchitecture
 extension Player {
     enum Action: Equatable {
         case viewAppeared
+        
+        case buyPremiumTapped
+        case purchased
+        case purchaseError
+        
+        case progress(SliderReducer.Action)
+        case controls(PlayerActionButtonsReducer.Action)
+        case mode(ModeSelectorReducer.Action)
+        
         case audiobookLoaded(TaskResult<Audiobook>)
         case chapterLoaded(TaskResult<Double>)
         case playbackProgressUpdated(PlayerProgress)
 
         case chapterChanged
         case rateButtonTapped
-        case progress(SliderReducer.Action)
-        case controls(PlayerActionButtonsReducer.Action)
-        case mode(ModeSelectorReducer.Action)
 
         case alertDismissed
         case modeAlertDismissed
         case retryChapterLoadingTapped
         case retryAudiobookLoadingTapped
-        case buyPremiumTapped
-        case purchased
-        case purchaseError
     }
 }
